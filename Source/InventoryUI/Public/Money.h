@@ -49,5 +49,5 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FDataTableRowHandle MoneyTableHandle;
 
-	FMoneyStruct MoneyStruct;
+	FMoneyStruct* MoneyStruct;
 };

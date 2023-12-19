@@ -23,13 +23,12 @@ void AMoney::BeginPlay()
 void AMoney::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	
+
 	FName Name = MoneyTableHandle.RowName; //DataTableRowHandle에서 설정한 FMoneyStruct의 RowName.
 
-	MoneyStruct = *MoneyTableHandle.DataTable->FindRow<FMoneyStruct>(Name, ""); //DataTableRowHandle에서 설정한 DataTable에서 Name과 같은 Row의 정보를 가져옴.
+	if(MoneyTableHandle.DataTable) MoneyStruct = MoneyTableHandle.DataTable->FindRow<FMoneyStruct>(Name, ""); //DataTableRowHandle에서 설정한 DataTable에서 Name과 같은 Row의 정보를 가져옴.
 
-	MoneyMesh->SetStaticMesh(MoneyStruct.Mesh); // 가져온 정보의 Mesh로 MoneyMesh를 설정함.
-
+	if(MoneyStruct) MoneyMesh->SetStaticMesh(MoneyStruct->Mesh); // 가져온 정보의 Mesh로 MoneyMesh를 설정함.
 }
 
 void AMoney::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -39,9 +38,9 @@ void AMoney::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 
 	FName Name = MoneyTableHandle.RowName;
 
-	MoneyStruct = *MoneyTableHandle.DataTable->FindRow<FMoneyStruct>(Name, "");
+	MoneyStruct = MoneyTableHandle.DataTable->FindRow<FMoneyStruct>(Name, "");
 
-	int64 Money = Zelda->InventoryComponent->GetMoney() + MoneyStruct.Amount;
+	int64 Money = Zelda->InventoryComponent->GetMoney() + MoneyStruct->Amount;
 
 	Zelda->InventoryComponent->SetMoney(Money);
 
