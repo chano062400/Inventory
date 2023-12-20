@@ -38,7 +38,7 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 	if (ItemToAdd->ItemStruct.ItemTypes == EItemTypes::EIT_Sword)
 	{
 		int32 LimitSize = AllItems.Sword.Num();
-		int CanAddIdx = 6;
+		int CanAddIdx = LimitSize - 1;
 		bool CanEqualItem = false; 
 		for (int idx = 0; idx < AllItems.Sword.Num(); idx++)
 		{
@@ -89,7 +89,7 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 	if (ItemToAdd->ItemStruct.ItemTypes == EItemTypes::EIT_Shield)
 	{
 		int32 LimitSize = AllItems.Shield.Num();
-		int CanAddIdx = 6;
+		int CanAddIdx = LimitSize - 1;
 		bool CanEqualItem = false;
 		for (int idx = 0; idx < AllItems.Shield.Num(); idx++)
 		{
@@ -139,7 +139,7 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 	if (ItemToAdd->ItemStruct.ItemTypes == EItemTypes::EIT_Eatables)
 	{
 		int32 LimitSize = AllItems.Eatables.Num();
-		int CanAddIdx = 6;
+		int CanAddIdx = LimitSize -1 ;
 		bool CanEqualItem = false;
 		for (int idx = 0; idx < AllItems.Eatables.Num(); idx++)
 		{

@@ -74,7 +74,7 @@ public:
 		FItemStruct ItemStruct;
 
 	UPROPERTY(VisibleAnywhere)
-		FItemInfo ItemInfo;
+	FItemInfo ItemInfo;
 
 	FOnItemEquippedDelegate OnItemEquippedDelegate;
 
