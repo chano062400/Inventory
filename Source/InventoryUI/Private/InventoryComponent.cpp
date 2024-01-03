@@ -8,12 +8,6 @@
 UInventoryComponent::UInventoryComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-
-
-	FItemStruct ItemStruct;
-	AllItems.Sword.Init(ItemStruct, 5);
-	AllItems.Shield.Init(ItemStruct, 4);
-	AllItems.Eatables.Init(ItemStruct, 10);
 }
 
 
@@ -38,47 +32,47 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 	if (ItemToAdd->ItemStruct.ItemTypes == EItemTypes::EIT_Sword)
 	{
 		int32 LimitSize = AllItems.Sword.Num();
-		int CanAddIdx = LimitSize - 1;
-		bool CanEqualItem = false; 
+		int CanAddIdx = LimitSize - 1; // 새로 추가할 수 있는 위치 
+		bool IsInInventoryThisItem = false; 
 		for (int idx = 0; idx < AllItems.Sword.Num(); idx++)
 		{
 			auto& Item = AllItems.Sword[idx];
-			if(Item.ItemTypes == EItemTypes::EIT_None) CanAddIdx = FMath::Min(CanAddIdx, idx); // 새로 추가할 수 있는 위치 
+			if(Item.ItemTypes == EItemTypes::EIT_None) CanAddIdx = FMath::Min(CanAddIdx, idx); 
 
-			if (CanAddIdx == 0) // 해당 아이템의 인벤토리에 아무것도 없을 경우.
+			if (CanAddIdx == 0) // 해당 종류의 인벤토리에 아무것도 없을 경우.
 			{
 				AllItems.Sword.Insert(ItemToAdd->ItemStruct, CanAddIdx);
 				AllItems.Sword.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
 				return true;
 			}
 			
-			if (Item.ThisItemTableHandle.RowName == ItemToAdd->ItemStruct.ThisItemTableHandle.RowName)
+			if (Item.ThisItemTableHandle.RowName == ItemToAdd->ItemStruct.ThisItemTableHandle.RowName)// 해당 아이템이 인벤토리에 이미 있는 경우.
 			{
 				FName Name = Item.ThisItemTableHandle.RowName; 
 				FItemInfo* ItemInfo = Item.ThisItemTableHandle.DataTable->FindRow<FItemInfo>(Name, "");
-				int32 QuantitiyToAdd = Item.Quantity + ItemToAdd->ItemStruct.Quantity; // 추가되고 나서의 양 
+				int32 QuantitiyToAdd = Item.Quantity + ItemToAdd->ItemStruct.Quantity; // 추가되고나서의 수량
 
-				if (ItemInfo && QuantitiyToAdd <= ItemInfo->StackSize)
+				if (ItemInfo && Item.Quantity < ItemInfo->StackSize) // 최대 수량보다 적게 갖고있다면
 				{
 					int32 ItemQuantity = FMath::Clamp(QuantitiyToAdd, 0, ItemInfo->StackSize); // Clamp를 이용해서 가질 수 있는 최대량(stacksize) 이하로 추가.
 					Item.Quantity = ItemQuantity;
-					CanEqualItem = true;
+					IsInInventoryThisItem = true;
 					AllItems.Sword.SetNum(LimitSize);
 					return true;
 				}
 				else // 최대량으로 가지고 있다면 더 이상 가질 수 없음.
 				{
-					CanEqualItem = true;
+					IsInInventoryThisItem = true;
 					//To Do (최대 수량을 갖고 있다는 메세지 위젯 출력)
 					return false;
 				}
 			}
 		}
 
-		if (!CanEqualItem && CanAddIdx > 0) // 해당 아이템의 인벤토리에 아이템은 있지만 같은 아이템은 없는 경우.
+		if (!IsInInventoryThisItem && CanAddIdx > 0) // 해당 종류의 인벤토리에 다른 아이템은 있지만 해당 아이템은 없는 경우.
 		{
 			AllItems.Sword.Insert(ItemToAdd->ItemStruct, CanAddIdx);
-			AllItems.Sword.SetNum(LimitSize); 
+			AllItems.Sword.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
 			return true;
 		}
 
@@ -90,42 +84,42 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 	{
 		int32 LimitSize = AllItems.Shield.Num();
 		int CanAddIdx = LimitSize - 1;
-		bool CanEqualItem = false;
+		bool IsInInventoryThisItem = false;
 		for (int idx = 0; idx < AllItems.Shield.Num(); idx++)
 		{
 			auto& Item = AllItems.Shield[idx];
 			if (Item.ItemTypes == EItemTypes::EIT_None) CanAddIdx = FMath::Min(CanAddIdx, idx); // 새로 추가할 수 있는 위치 
 
-			if (CanAddIdx == 0) // 해당 아이템의 인벤토리에 아무것도 없을 경우.
+			if (CanAddIdx == 0) // 해당 종류의 인벤토리에 아무것도 없을 경우.
 			{
 				AllItems.Shield.Insert(ItemToAdd->ItemStruct, CanAddIdx);
 				AllItems.Shield.SetNum(LimitSize);
 				return true;
 			}
 
-			if (Item.ThisItemTableHandle.RowName == ItemToAdd->ItemStruct.ThisItemTableHandle.RowName)
+			if (Item.ThisItemTableHandle.RowName == ItemToAdd->ItemStruct.ThisItemTableHandle.RowName)// 해당 아이템이 인벤토리에 이미 있는 경우.
 			{
 				FName Name = Item.ThisItemTableHandle.RowName;
 				FItemInfo* ItemInfo = Item.ThisItemTableHandle.DataTable->FindRow<FItemInfo>(Name, "");
 				int32 QuantitiyToAdd = Item.Quantity + ItemToAdd->ItemStruct.Quantity; // 추가되고 나서의 양 
 
-				if (ItemInfo && QuantitiyToAdd <= ItemInfo->StackSize)
+				if (ItemInfo && Item.Quantity < ItemInfo->StackSize) // 최대 수량보다 적게 갖고있다면
 				{
 					int32 ItemQuantity = FMath::Clamp(QuantitiyToAdd, 0, ItemInfo->StackSize); // Clamp를 이용해서 가질 수 있는 최대량(stacksize) 이하로 추가.
 					Item.Quantity = ItemQuantity;
-					CanEqualItem = true;
+					IsInInventoryThisItem = true;
 					AllItems.Shield.SetNum(LimitSize);
 					return true;
 				}
 				else // 최대량으로 가지고 있다면 더 이상 가질 수 없음.
 				{
-					CanEqualItem = true;
+					IsInInventoryThisItem = true;
 					//To Do (최대 수량을 갖고 있다는 메세지 위젯 출력)
 					return false;
 				}
 			}
 		}
-		if (!CanEqualItem && CanAddIdx > 0) // 해당 아이템의 인벤토리에 아이템은 있지만 같은 아이템은 없는 경우.
+		if (!IsInInventoryThisItem && CanAddIdx > 0) // 해당 종류의 인벤토리에 다른 아이템은 있지만 해당 아이템은 없는 경우.
 		{
 			AllItems.Shield.Insert(ItemToAdd->ItemStruct, CanAddIdx);
 			AllItems.Shield.SetNum(LimitSize);  // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
@@ -140,45 +134,45 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 	{
 		int32 LimitSize = AllItems.Eatables.Num();
 		int CanAddIdx = LimitSize -1 ;
-		bool CanEqualItem = false;
+		bool IsInInventoryThisItem = false;
 		for (int idx = 0; idx < AllItems.Eatables.Num(); idx++)
 		{
 			auto& Item = AllItems.Eatables[idx];
 			if (Item.ItemTypes == EItemTypes::EIT_None) CanAddIdx = FMath::Min(CanAddIdx, idx); // 새로 추가할 수 있는 위치 
 
-			if (CanAddIdx == 0) // 해당 아이템의 인벤토리에 아무것도 없을 경우.
+			if (CanAddIdx == 0) // 해당 종류의 인벤토리에 아무것도 없을 경우.
 			{
 				AllItems.Eatables.Insert(ItemToAdd->ItemStruct, CanAddIdx);
 				AllItems.Eatables.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
 				return true;
 			}
 
-			if (Item.ThisItemTableHandle.RowName == ItemToAdd->ItemStruct.ThisItemTableHandle.RowName)
+			if (Item.ThisItemTableHandle.RowName == ItemToAdd->ItemStruct.ThisItemTableHandle.RowName) // 해당 아이템이 인벤토리에 이미 있는 경우.
 			{
 				FName Name = Item.ThisItemTableHandle.RowName;
 				FItemInfo* ItemInfo = Item.ThisItemTableHandle.DataTable->FindRow<FItemInfo>(Name, "");
 				int32 QuantitiyToAdd = Item.Quantity + ItemToAdd->ItemStruct.Quantity; // 추가되고 나서의 양 
 
-				if (ItemInfo && QuantitiyToAdd <= ItemInfo->StackSize)
+				if (ItemInfo && Item.Quantity < ItemInfo->StackSize) // 최대 수량보다 적게 갖고있다면
 				{
 					int32 ItemQuantity = FMath::Clamp(QuantitiyToAdd, 0, ItemInfo->StackSize); // Clamp를 이용해서 가질 수 있는 최대량(stacksize) 이하로 추가.
 					Item.Quantity = ItemQuantity;
-					CanEqualItem = true;
+					IsInInventoryThisItem = true;
 					AllItems.Eatables.SetNum(LimitSize);
 					return true;
 				}
 				else // 최대량으로 가지고 있다면 더 이상 가질 수 없음.
 				{
-					CanEqualItem = true;
+					IsInInventoryThisItem = true;
 					//To Do (최대 수량을 갖고 있다는 메세지 위젯 출력)
 					return false;
 				}
 			}
 		}
-		if (!CanEqualItem && CanAddIdx > 0) // 해당 아이템의 인벤토리에 아이템은 있지만 같은 아이템은 없는 경우.
+		if (!IsInInventoryThisItem && CanAddIdx > 0) // 해당 종류의 인벤토리에 다른 아이템은 있지만 해당 아이템은 없는 경우.
 		{
 			AllItems.Eatables.Insert(ItemToAdd->ItemStruct, CanAddIdx);
-			AllItems.Eatables.SetNum(LimitSize); 
+			AllItems.Eatables.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
 			return true;
 		}
 	}
@@ -189,7 +183,11 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	FItemStruct ItemStruct;
+	AllItems.Sword.Init(ItemStruct, 5);
+	AllItems.Shield.Init(ItemStruct, 4);
+	AllItems.Eatables.Init(ItemStruct, 10);
 }
 
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

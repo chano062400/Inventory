@@ -23,6 +23,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UInventoryComponent* InventoryComponent;
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void UpdateInventory(struct FAllItem AllItem);
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -54,7 +57,6 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* InteractAction;
-
 
 
 private:

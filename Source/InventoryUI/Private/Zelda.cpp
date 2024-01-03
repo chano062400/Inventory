@@ -9,6 +9,7 @@
 #include "Blueprint/UserWidget.h"
 #include "ZeldaPlayerController.h"
 #include "InventoryComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AZelda::AZelda()
 {
@@ -42,12 +43,13 @@ void AZelda::BeginPlay()
 			Subsystem->AddMappingContext(CharacterMappingContext, 0);
 		}
 	}
+
+	UpdateInventory(InventoryComponent->AllItems);
 }
 
 void AZelda::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AZelda::Move(const FInputActionValue& Value)
@@ -60,8 +62,6 @@ void AZelda::Move(const FInputActionValue& Value)
 	{
 		const FVector FowardDirecton = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(FowardDirecton, MovementVector.X);
-
-		UE_LOG(LogTemp, Error, TEXT("Move"));
 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(RightDirection, MovementVector.Y);
@@ -83,7 +83,11 @@ void AZelda::Interact()
 {
 	if (InventoryComponent->ThisItem)
 	{
-		if (InventoryComponent->AddToInventory(InventoryComponent->ThisItem)) InventoryComponent->ThisItem->Destroy();
+		if (InventoryComponent->AddToInventory(InventoryComponent->ThisItem))
+		{
+			InventoryComponent->ThisItem->Destroy();
+			UpdateInventory(InventoryComponent->AllItems);
+		}
 	}
 }
 

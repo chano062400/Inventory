@@ -18,8 +18,11 @@ public:
 
 	void OpenInventory();
 
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class UUserWidget> InventoryWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> InventoryWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UUserWidget> Inventory;
 	
 
 };
