@@ -24,5 +24,4 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UUserWidget> Inventory;
 	
-
 };
