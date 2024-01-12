@@ -43,6 +43,12 @@ protected:
 
 	void OpenInventory();
 
+	UFUNCTION(BlueprintCallable)
+	void EquipSword(UStaticMesh* Sword);
+
+	UFUNCTION(BlueprintCallable)
+	void EquipShield(UStaticMesh* Shield);
+
 	UPROPERTY(EditAnywhere, Category = Input)
 		class UInputMappingContext* CharacterMappingContext;
 
@@ -58,6 +64,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* InteractAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* SwordMesh;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* ShieldMesh;
 
 private:
 

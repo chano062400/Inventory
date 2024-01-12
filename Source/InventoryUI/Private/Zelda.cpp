@@ -10,21 +10,27 @@
 #include "ZeldaPlayerController.h"
 #include "InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "Components/StaticMeshComponent.h"
 AZelda::AZelda()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
 	GetMesh()->SetGenerateOverlapEvents(true);
 
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	SpringArm->SetupAttachment(GetMesh());
 	SpringArm->TargetArmLength = 150.f;
 	SpringArm->bUsePawnControlRotation = true;
 
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
+
+	SwordMesh = CreateDefaultSubobject<UStaticMeshComponent>("Sword");
+	SwordMesh->SetupAttachment(GetMesh(), FName("SwordSocket"));
+
+	ShieldMesh = CreateDefaultSubobject<UStaticMeshComponent>("Shield");
+	ShieldMesh->SetupAttachment(GetMesh(), FName("ShieldSocket"));
 
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Inventory Component");
 
@@ -97,6 +103,16 @@ void AZelda::OpenInventory()
 	check(PC);
 
 	PC->OpenInventory();
+}
+
+void AZelda::EquipSword(UStaticMesh* Sword)
+{
+	SwordMesh->SetStaticMesh(Sword);
+}
+
+void AZelda::EquipShield(UStaticMesh* Shield)
+{
+	ShieldMesh->SetStaticMesh(Shield);
 }
 
 void AZelda::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

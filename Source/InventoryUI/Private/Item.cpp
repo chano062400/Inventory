@@ -8,6 +8,7 @@ AItem::AItem()
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	ItemMesh->SetupAttachment(RootComponent);
+	ItemMesh->SetSimulatePhysics(true);
 
 	InteractWidget = CreateDefaultSubobject<UWidgetComponent>("InteractWidget");
 	InteractWidget->SetupAttachment(ItemMesh);

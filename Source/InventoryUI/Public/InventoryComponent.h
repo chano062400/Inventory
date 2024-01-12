@@ -12,13 +12,13 @@ struct FAllItem
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FItemStruct> Sword;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FItemStruct> Shield;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FItemStruct> Eatables;
 
 };
@@ -63,7 +63,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		TObjectPtr<AItem> ThisItem = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FAllItem AllItems;
 
 protected:

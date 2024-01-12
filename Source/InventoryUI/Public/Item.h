@@ -70,7 +70,7 @@ public:
 
 	void ShowInteractWidget(bool bShowWidget);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (ExposeOnSpawn = "true")) // ExposeOnSpawn - 프로퍼티를 클래스 유형에 대한 Spawn Actor에 연결지정합니다.
 		FItemStruct ItemStruct;
 
 	UPROPERTY(VisibleAnywhere)
