@@ -66,6 +66,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FAllItem AllItems;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FItemStruct EquippedSword;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FItemStruct EquippedShield;
+
 protected:
 	
 	virtual void BeginPlay() override;

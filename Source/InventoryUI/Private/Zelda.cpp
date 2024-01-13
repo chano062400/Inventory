@@ -103,6 +103,7 @@ void AZelda::OpenInventory()
 	check(PC);
 
 	PC->OpenInventory();
+	UpdateInventory(InventoryComponent->AllItems);
 }
 
 void AZelda::EquipSword(UStaticMesh* Sword)

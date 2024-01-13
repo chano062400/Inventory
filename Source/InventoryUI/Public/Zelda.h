@@ -49,6 +49,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void EquipShield(UStaticMesh* Shield);
 
+
 	UPROPERTY(EditAnywhere, Category = Input)
 		class UInputMappingContext* CharacterMappingContext;
 

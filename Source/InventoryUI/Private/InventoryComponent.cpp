@@ -41,8 +41,9 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 
 			if (CanAddIdx == 0) // 해당 종류의 인벤토리에 아무것도 없을 경우.
 			{
-				AllItems.Sword.Insert(ItemToAdd->ItemStruct, CanAddIdx);
-				AllItems.Sword.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+				//AllItems.Sword.Insert(ItemToAdd->ItemStruct, CanAddIdx);
+				//AllItems.Sword.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+				AllItems.Sword[CanAddIdx] = ItemToAdd->ItemStruct;
 				return true;
 			}
 			
@@ -57,7 +58,7 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 					int32 ItemQuantity = FMath::Clamp(QuantitiyToAdd, 0, ItemInfo->StackSize); // Clamp를 이용해서 가질 수 있는 최대량(stacksize) 이하로 추가.
 					Item.Quantity = ItemQuantity;
 					IsInInventoryThisItem = true;
-					AllItems.Sword.SetNum(LimitSize);
+					//AllItems.Sword.SetNum(LimitSize);
 					return true;
 				}
 				else // 최대량으로 가지고 있다면 더 이상 가질 수 없음.
@@ -71,8 +72,9 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 
 		if (!IsInInventoryThisItem && CanAddIdx > 0) // 해당 종류의 인벤토리에 다른 아이템은 있지만 해당 아이템은 없는 경우.
 		{
-			AllItems.Sword.Insert(ItemToAdd->ItemStruct, CanAddIdx);
-			AllItems.Sword.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+			//AllItems.Sword.Insert(ItemToAdd->ItemStruct, CanAddIdx);
+			//AllItems.Sword.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+			AllItems.Sword[CanAddIdx] = ItemToAdd->ItemStruct;
 			return true;
 		}
 
@@ -92,8 +94,9 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 
 			if (CanAddIdx == 0) // 해당 종류의 인벤토리에 아무것도 없을 경우.
 			{
-				AllItems.Shield.Insert(ItemToAdd->ItemStruct, CanAddIdx);
-				AllItems.Shield.SetNum(LimitSize);
+				/*AllItems.Shield.Insert(ItemToAdd->ItemStruct, CanAddIdx);
+				AllItems.Shield.SetNum(LimitSize);*/
+				AllItems.Shield[CanAddIdx] = ItemToAdd->ItemStruct;
 				return true;
 			}
 
@@ -108,7 +111,7 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 					int32 ItemQuantity = FMath::Clamp(QuantitiyToAdd, 0, ItemInfo->StackSize); // Clamp를 이용해서 가질 수 있는 최대량(stacksize) 이하로 추가.
 					Item.Quantity = ItemQuantity;
 					IsInInventoryThisItem = true;
-					AllItems.Shield.SetNum(LimitSize);
+					//AllItems.Shield.SetNum(LimitSize);
 					return true;
 				}
 				else // 최대량으로 가지고 있다면 더 이상 가질 수 없음.
@@ -121,8 +124,9 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 		}
 		if (!IsInInventoryThisItem && CanAddIdx > 0) // 해당 종류의 인벤토리에 다른 아이템은 있지만 해당 아이템은 없는 경우.
 		{
-			AllItems.Shield.Insert(ItemToAdd->ItemStruct, CanAddIdx);
-			AllItems.Shield.SetNum(LimitSize);  // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+			//AllItems.Shield.Insert(ItemToAdd->ItemStruct, CanAddIdx);
+			//AllItems.Shield.SetNum(LimitSize);  // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+			AllItems.Shield[CanAddIdx] = ItemToAdd->ItemStruct;
 			return true;
 		}
 
@@ -142,8 +146,9 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 
 			if (CanAddIdx == 0) // 해당 종류의 인벤토리에 아무것도 없을 경우.
 			{
-				AllItems.Eatables.Insert(ItemToAdd->ItemStruct, CanAddIdx);
-				AllItems.Eatables.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+				//AllItems.Eatables.Insert(ItemToAdd->ItemStruct, CanAddIdx);
+				//AllItems.Eatables.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+				AllItems.Eatables[CanAddIdx] = ItemToAdd->ItemStruct;
 				return true;
 			}
 
@@ -158,7 +163,7 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 					int32 ItemQuantity = FMath::Clamp(QuantitiyToAdd, 0, ItemInfo->StackSize); // Clamp를 이용해서 가질 수 있는 최대량(stacksize) 이하로 추가.
 					Item.Quantity = ItemQuantity;
 					IsInInventoryThisItem = true;
-					AllItems.Eatables.SetNum(LimitSize);
+					/*AllItems.Eatables.SetNum(LimitSize);*/
 					return true;
 				}
 				else // 최대량으로 가지고 있다면 더 이상 가질 수 없음.
@@ -171,8 +176,9 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 		}
 		if (!IsInInventoryThisItem && CanAddIdx > 0) // 해당 종류의 인벤토리에 다른 아이템은 있지만 해당 아이템은 없는 경우.
 		{
-			AllItems.Eatables.Insert(ItemToAdd->ItemStruct, CanAddIdx);
-			AllItems.Eatables.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+			//AllItems.Eatables.Insert(ItemToAdd->ItemStruct, CanAddIdx);
+			//AllItems.Eatables.SetNum(LimitSize); // Insert시 사이즈가 1개씩 늘어나기 때문에 최대 인벤토리 사이즈로 맞춰줌.
+			AllItems.Eatables[CanAddIdx] = ItemToAdd->ItemStruct;
 			return true;
 		}
 	}
