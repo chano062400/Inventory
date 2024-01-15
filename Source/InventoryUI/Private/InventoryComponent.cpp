@@ -4,6 +4,7 @@
 #include "Camera/PlayerCameraManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Item.h"
+#include "Zelda.h"
 
 UInventoryComponent::UInventoryComponent()
 {
@@ -184,6 +185,14 @@ bool UInventoryComponent::AddToInventory(AItem* ItemToAdd)
 	}
 	
 	return false;
+}
+
+void UInventoryComponent::IncreaseInventorySize(int AddToSword, int AddToShield, int AddToEatables)
+{
+	AllItems.Sword.SetNum(AllItems.Sword.Num() + AddToSword);
+	AllItems.Shield.SetNum(AllItems.Shield.Num() + AddToShield);
+	AllItems.Eatables.SetNum(AllItems.Eatables.Num() + AddToEatables);
+	Cast<AZelda>(GetOwner())->UpdateInventory(AllItems);
 }
 
 void UInventoryComponent::BeginPlay()

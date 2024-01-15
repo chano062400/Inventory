@@ -72,6 +72,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FItemStruct EquippedShield;
 
+	UFUNCTION(BlueprintCallable)
+	void IncreaseInventorySize(int AddToSword, int AddToShield, int AddToEatables);
+
 protected:
 	
 	virtual void BeginPlay() override;
